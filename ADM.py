@@ -37,7 +37,7 @@ me = 9.1093897*10**(-28)
 mp = 1.6726*10**(-24)
 mH = 1.6733*10**(-24)
 e = 4.8032068*10**(-10)
-alphae = (1.+0.7)/2.#0.5
+alphae = (1.+0.7)/2.
 sigmat = 6.6524*10**(-25)
 Msol = 1.99*10**(33)
 Rsol = 6.96*10**(10)
@@ -49,14 +49,14 @@ Lsol = 3.9*10**(33)
 # Line-of-sight angle ----------------------------------------------------------
 #-------------------------------------------------------------------------------
 
-#With degenerancy between inclination and obliquity
 def csalpha(phi, beta, inc):
+	#Note the degenerancy between the inclination and obliquity
 	return np.sin(beta)*np.cos(phi)*np.sin(inc)+np.cos(beta)*np.cos(inc)
 
-#To avoid the degenrancy, the Independant paramters A and B can be used, where
-#A = inc + beta,
-#B = |inc - beta|
 def csalpha2(phi, A, B):
+	#Degenrancy avoided by reexpressong the above equation with 
+	#A = inc + beta,
+	#B = |inc - beta|
 	return 0.5*(np.cos(B)*(1.+np.cos(phi)) + np.cos(A)*(1.-np.cos(phi)) )
 
 
@@ -148,7 +148,7 @@ def admCAL(Nx, Ny, Nz, RA, Rc, Teff, Tinf, chiinf, delta ):
 	Y=YY[Ny:NNy]
 	Z=ZZ[Nz:NNz]
 	
-	#Defininf density grids of each component
+	#Defining density grids of each component
 	Rhoh=np.zeros([Nz,Nx,Ny])
 	Rhow=np.zeros([Nz,Nx,Ny])
 	Rhoc=np.zeros([Nz,Nx,Ny])
@@ -178,7 +178,7 @@ def admCAL(Nx, Ny, Nz, RA, Rc, Teff, Tinf, chiinf, delta ):
 				r=np.sqrt(p**2+Z[k]**2)
 				mu=Z[k]/r
 				rRA=(1.-mu**2)/(1-mustar_RA**2)
-				if r > 1.02:
+				if r > 1.05:
 					mustar=np.sqrt(1.-(1.-mu**2)/r)
 					rm = 1./(1.-mustar**2)
 					mus=fs(mustar)
@@ -198,7 +198,7 @@ def admCAL(Nx, Ny, Nz, RA, Rc, Teff, Tinf, chiinf, delta ):
 						Rhoc[k,i,j]=rhoc(r,mu,delta)
 						#Vc[k,i,j]=wc(r,mu)
 						#tc[k,i,j]=Teff
-						if r > rs and rs > 1.02 :
+						if r > rs and rs > 1.05 :
 							Rhoh[k,i,j]=rhoh(r,rs,mu,mus,Tinf,Teff)
 							#Vh[k,i,j]=wh(r,rs,mu,mus,Tinf,Teff)
 							#th[k,i,j]=Th(rs,mu,mus,Tinf,Teff)
@@ -317,7 +317,6 @@ def LC(phi, A, B, Nx, Ny, Nz, Teff, Mstar, Rstar, Vinf,  Mdot, Bd, delta, dm0 ):
 	#total = t1-t0
 	#print total
 	return dm[1:]+dm0-dm[0]
-
 
 
 
